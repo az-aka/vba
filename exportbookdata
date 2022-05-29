@@ -1,0 +1,48 @@
+Sub マスターデータ取得01()
+Dim SetFile As String
+Dim wbMoto, Wbsaki As Workbook
+
+Set wbMoto = ActiveWorkbook
+Application.DisplayAlerts = False
+
+SetFile = "./データ.xlsm"
+
+Workbooks.Open Filename:=SetFile, ReadOnly:=True, UpdateLinks:=0
+Set Wbsaki = Workbooks.Open(SetFile)
+
+
+
+
+Dim ws1 As Worksheet, ws2 As Worksheet, ws3 As Worksheet
+Set ws1 = Wbsaki.Worksheets("Sheet1")
+Set ws2 = Wbsaki.Worksheets("Sheet2")
+Set ws3 = wbMoto.Worksheets("Sheet1")
+
+Dim cmax As Long
+cmax = ws1.Range("B65536").End(xlUp).Row
+Debug.Print ws1.Name & "のcmax=" & cmax
+
+Dim i As Long
+For i = 2 To cmax
+    Dim cmax1 As Long
+    cmax1 = ws3.Range("A65536").End(xlUp).Row
+    ws3.Range("A" & cmax1 + 1 & ":B" & cmax1 + 1).Value = ws1.Range("B" & i + 1 & ":C" & i + 1).Value
+    ws3.Range("C" & cmax1 + 1).Value = ws1.Range("E" & i + 1).Value
+    
+Next
+
+cmax = ws2.Range("D65536").End(xlUp).Row
+
+For i = 4 To cmax
+    cmax1 = ws3.Range("A65536").End(xlUp).Row
+    ws3.Range("A" & cmax1 + 1 & ":B" & cmax1 + 1).Value = ws2.Range("D" & i & ":E" & i).Value
+    ws3.Range("C" & cmax1 + 1).Value = ws2.Range("G" & i).Value
+    
+Next
+
+Wbsaki.Close False
+Application.DisplayAlerts = True
+
+
+
+End Sub
