@@ -1,0 +1,28 @@
+# vba
+VBAexportdate
+
+Sub 水道光熱費転記()
+
+Dim SetFile As String
+Dim WbSet, WbGet As Workbook
+
+Set WbSet = ActiveWorkbook
+
+SetFile = "./水道光熱費.xlsx"
+
+Workbooks.Open Filename:=SetFile, ReadOnly:=True, UpdateLinks:=0
+Set WbGet = Workbooks.Open(SetFile)
+
+
+Dim Idata As Worksheet, Irs As Worksheet
+Set Idata = WbGet.Worksheets(1)
+Set Irs = WbSet.Worksheets(1)
+
+
+Dim i As Long
+For i = 3 To 9
+
+    Irs.Range("B" & i & ":C" & i).Value = Idata.Range("A" & i & ":B" & i).Value
+Next
+
+End Sub
